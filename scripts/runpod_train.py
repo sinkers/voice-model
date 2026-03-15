@@ -20,7 +20,11 @@ import time
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
-RUNPOD_API_KEY  = os.environ.get("RUNPOD_API_KEY", "") or open(os.path.expanduser("~/.runpod_api_key")).read().strip()
+try:
+    RUNPOD_API_KEY = os.environ.get("RUNPOD_API_KEY", "") or open(os.path.expanduser("~/.runpod_api_key")).read().strip()
+except FileNotFoundError:
+    print("Error: Set RUNPOD_API_KEY env var or create ~/.runpod_api_key")
+    sys.exit(1)
 DATASET_URL     = "https://litter.catbox.moe/9u0ioi.zip"
 GPU_TYPE        = "NVIDIA RTX A5000"
 # PyTorch 2.1 + Python 3.10: PL 1.7.7 has wheels for py3.10 and works with torch 2.x
@@ -182,8 +186,7 @@ echo "Waiting for Pi to download model before pod terminates..."
 
 TRAIN_SCRIPT = TRAIN_SCRIPT \
     .replace("$DATASET_URL", DATASET_URL) \
-    .replace("$EPOCHS", str(EPOCHS)) \
-    .replace("$RUNPOD_API_KEY", RUNPOD_API_KEY)
+    .replace("$EPOCHS", str(EPOCHS))
 
 
 def graphql(query, variables=None):
@@ -234,7 +237,7 @@ def create_pod(pub_key):
         "volumeMountPath": "/workspace",
         "startJupyter": False,
         "startSsh": True,
-        "env": [{"key": "PUBLIC_KEY", "value": pub_key}, {"key": "RUNPOD_API_KEY", "value": RUNPOD_API_KEY}],
+        "env": [{"key": "PUBLIC_KEY", "value": pub_key}],
     }}
     return graphql(query, variables)["podFindAndDeployOnDemand"]["id"]
 
@@ -350,47 +353,66 @@ def main():
         return
 
     # ── Full run ──────────────────────────────────────────────────────────────
-    # Resume existing pod if state file exists
-    if state_file.exists():
-        state = json.loads(state_file.read_text())
-        pod_id = state["pod_id"]
-        print(f"Resuming pod {pod_id} from state file...")
-    else:
-        print("=== Andrew Voice Model — RunPod Training ===")
-        print(f"  Image:   {DOCKER_IMAGE}")
-        print(f"  GPU:     {GPU_TYPE}")
-        print(f"  Epochs:  {EPOCHS}")
-        print()
+    pod_id = None
+    try:
+        # Resume existing pod if state file exists
+        if state_file.exists():
+            state = json.loads(state_file.read_text())
+            pod_id = state["pod_id"]
+            print(f"Resuming pod {pod_id} from state file...")
+        else:
+            print("=== Andrew Voice Model — RunPod Training ===")
+            print(f"  Image:   {DOCKER_IMAGE}")
+            print(f"  GPU:     {GPU_TYPE}")
+            print(f"  Epochs:  {EPOCHS}")
+            print()
 
-        print("[1/4] Generating SSH key...")
-        pub_key = ensure_ssh_key()
+            print("[1/4] Generating SSH key...")
+            pub_key = ensure_ssh_key()
 
-        print("[2/4] Creating pod...")
-        pod_id = create_pod(pub_key)
-        state_file.write_text(json.dumps({"pod_id": pod_id, "created": time.time()}))
-        print(f"  Pod ID: {pod_id}")
+            print("[2/4] Creating pod...")
+            pod_id = create_pod(pub_key)
+            state_file.write_text(json.dumps({"pod_id": pod_id, "created": time.time()}))
+            print(f"  Pod ID: {pod_id}")
 
-    print("[3/4] Waiting for SSH...")
-    ssh_info = wait_for_ssh(pod_id)
-    print(f"  {ssh_info['ip']}:{ssh_info['publicPort']}")
+        print("[3/4] Waiting for SSH...")
+        ssh_info = wait_for_ssh(pod_id)
+        print(f"  {ssh_info['ip']}:{ssh_info['publicPort']}")
+        # Persist ssh connection info so monitor_pod.sh can find the pod
+        state_file.write_text(json.dumps({
+            "pod_id": pod_id,
+            "ip": ssh_info["ip"],
+            "port": ssh_info["publicPort"],
+        }))
 
-    # Write and launch training script
-    print("[4/4] Launching training script...")
-    status = ssh(ssh_info, "cat /workspace/training_status.txt 2>/dev/null || echo NONE", check=False)
-    if status == "DONE":
-        print("  Already complete — downloading...")
-    else:
-        # Write script to pod
-        escaped = TRAIN_SCRIPT.replace("'", "'\\''")
-        ssh(ssh_info, f"cat > /workspace/train.sh << 'EOF'\n{TRAIN_SCRIPT}\nEOF\nchmod +x /workspace/train.sh")
-        ssh(ssh_info, "nohup bash /workspace/train.sh > /workspace/train.log 2>&1 &", check=False)
-        print("  Script launched. Monitoring...")
-        print()
-        done = monitor(pod_id, ssh_info)
-        if not done:
-            return
+        # Write and launch training script
+        print("[4/4] Launching training script...")
+        status = ssh(ssh_info, "cat /workspace/training_status.txt 2>/dev/null || echo NONE", check=False)
+        if status == "DONE":
+            print("  Already complete — downloading...")
+        else:
+            # Write script to pod
+            escaped = TRAIN_SCRIPT.replace("'", "'\\''")
+            ssh(ssh_info, f"cat > /workspace/train.sh << 'EOF'\n{TRAIN_SCRIPT}\nEOF\nchmod +x /workspace/train.sh")
+            ssh(ssh_info, "nohup bash /workspace/train.sh > /workspace/train.log 2>&1 &", check=False)
+            print("  Script launched. Monitoring...")
+            print()
+            done = monitor(pod_id, ssh_info)
+            if not done:
+                return
 
-    _download_and_deploy(ssh_info, pod_id, state_file)
+        _download_and_deploy(ssh_info, pod_id, state_file)
+    except Exception as e:
+        print(f"\nERROR: {e}", file=sys.stderr)
+        raise
+    finally:
+        # If state_file still exists the pod was not cleanly terminated — stop billing.
+        if pod_id and state_file.exists():
+            print("Terminating pod to stop billing...")
+            try:
+                terminate_pod(pod_id)
+            except Exception:
+                print(f"Warning: could not terminate pod {pod_id} — terminate manually")
 
 
 def _download_and_deploy(ssh_info, pod_id, state_file):

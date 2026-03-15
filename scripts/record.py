@@ -138,8 +138,8 @@ def main():
             continue
 
         # Start recording — brief countdown so mic stabilises before speech
-        for i in (3, 2, 1):
-            print(f"  {i}...", end=" ", flush=True)
+        for countdown in (3, 2, 1):
+            print(f"  {countdown}...", end=" ", flush=True)
             time.sleep(0.6)
         print("  🔴 Recording... (press Enter to stop)", end="", flush=True)
         proc = record_clip(wav_path, device)
