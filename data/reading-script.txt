@@ -1,0 +1,222 @@
+# Voice Model Reading Script
+# Designed for: Piper TTS training — voice assistant use case
+# Target: ~300 sentences, 2–8 seconds each
+# Tips:
+#   - Read at your natural speaking pace
+#   - Keep a consistent distance from the mic
+#   - Pause briefly between sentences
+#   - Don't rush — quality beats speed
+#   - Record in 20–30 sentence sessions to keep energy consistent
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 1 — Warm-up & everyday phrases
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Good morning. How are you today?
+I'll be back in about twenty minutes.
+Could you please turn off the kitchen light?
+The weather looks really good this afternoon.
+Let me know when you're ready to leave.
+I think we should head off a bit earlier to beat the traffic.
+There's a good coffee shop just around the corner from here.
+I need to pick up a few things on the way home.
+Have you had a chance to read that yet?
+Set a reminder for me at half past eight tomorrow morning.
+That's a great idea — let's go with that.
+I'm not sure exactly where I left my keys.
+Can you play some music while I cook dinner?
+It's a bit cold this evening — I might light the fire.
+What time does the game start tonight?
+I'll send you a message when I'm on my way.
+We should catch up properly sometime soon.
+That was one of the best meals I've had in a while.
+Just give me five minutes and I'll be right with you.
+I think it might rain later, so bring a jacket.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 2 — Voice assistant responses
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Sure, I can help with that.
+I've set a timer for twenty minutes.
+The current temperature is eighteen degrees.
+Your next calendar event is at two o'clock this afternoon.
+I didn't quite catch that — could you say it again?
+Here's what I found for you.
+I'm not sure about that one — let me check.
+Done. I've turned off the living room lights.
+Your alarm is set for seven in the morning.
+The forecast shows rain tomorrow afternoon, clearing by evening.
+There are three unread messages in your inbox.
+I've added that to your shopping list.
+Playing your afternoon playlist now.
+The drive to the city should take about thirty-five minutes with current traffic.
+I couldn't find any results for that. Try rephrasing?
+That's been added to your reminders.
+Volume set to fifty percent.
+Connecting to your home Wi-Fi network now.
+I've sent that message for you.
+Sorry, something went wrong — please try again.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 3 — Numbers, times and dates
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+It's currently seven forty-five in the morning.
+Today is the fifteenth of March, twenty twenty-six.
+The total comes to one hundred and forty-two dollars and fifty cents.
+Your flight departs at six fifteen and arrives at eight forty.
+The package will be delivered between nine and eleven on Thursday.
+Please call back on zero four, double two, three, five, seven, eight, nine one.
+Set the oven to one hundred and eighty degrees for forty-five minutes.
+There are three hundred and sixty-five days in a standard year.
+The speed limit on this stretch of road is one hundred kilometres per hour.
+It's about twelve kilometres from here — roughly a fifteen-minute drive.
+We've been living here for just over four and a half years now.
+The meeting is scheduled for the twenty-third at two thirty in the afternoon.
+I turned forty-two last October and honestly it's not so bad.
+The receipt shows a balance of three hundred and seven dollars remaining.
+The next bus departs in eight minutes from platform four.
+Sunrise tomorrow is at six twenty-two, sunset at seven forty-nine.
+Interest rates have risen by point seven five percent this quarter.
+We'll need about two and a half litres of water for this recipe.
+The temperature overnight will drop to around four degrees.
+There's roughly one hour and twenty minutes left on the battery.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 4 — Australian places & context
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Hobart is a beautiful city, especially in the cooler months.
+The drive up to Mount Wellington is well worth it on a clear day.
+MONA is one of the most unique museums I've ever been to.
+Salamanca Market runs every Saturday morning rain or shine.
+We took the ferry across to Bruny Island for the long weekend.
+The Huon Valley is spectacular in autumn when the leaves turn.
+Freycinet National Park is about two and a half hours north of Hobart.
+It gets properly cold down here in winter — we're talking zero overnight.
+The Tasman Peninsula has some incredible coastal walks and sea cliffs.
+I grabbed takeaway from one of the fish and chip shops on the waterfront.
+They reckon it might snow on the mountain again by the end of the week.
+Port Arthur is a fascinating and sobering place to visit.
+The Derwent River looks absolutely stunning on a still morning.
+We've been getting a lot of westerlies coming through from the Southern Ocean.
+Battery Point is one of the most well-preserved historic areas in Australia.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 5 — Phonetically diverse (covers tricky sounds)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The fresh bread from the bakery smells absolutely wonderful.
+A peculiar purple platypus paddled past the pier.
+She thought through the theory thoroughly before speaking.
+Whether the weather is warm or wintry, I still go for a walk each day.
+The children cheerfully chased each other through the golden leaves.
+That enormous earthquake shook the structure right to its foundations.
+The surgeon carefully examined the x-ray before beginning the procedure.
+Vivid lightning lit up the valley just before the heavy rain arrived.
+His whispered voice was barely audible over the rushing stream.
+The jeweller's loupe revealed a tiny flaw at the edge of the gem.
+She squinted through the fog trying to make out the distant lighthouse.
+The rough waves crashed rhythmically against the weathered jetty.
+Both brothers laughed when they finally figured out the puzzle together.
+A gentle zephyr drifted through the open window on that warm spring afternoon.
+I thoroughly enjoy the challenge of a good cryptic crossword on a Sunday.
+The machinery hummed quietly in the background of the otherwise silent factory.
+Please measure three quarters of a cup of flour and sift it carefully.
+The ancient bridge groaned as the loaded truck slowly crossed it.
+Twelve grey geese flew quietly over the frozen lake at dusk.
+The judge's verdict brought a mixture of relief and quiet satisfaction.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 6 — Instructions & commands
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Press and hold the button on the side until the light flashes blue.
+Connect the cable firmly and make sure it clicks into place.
+Open the settings menu and scroll down to the privacy section.
+Add two tablespoons of olive oil and heat gently over medium heat.
+Fold the mixture in carefully so you don't knock the air out.
+Save the file before you close the window or you'll lose your changes.
+Turn the handle anticlockwise to release the pressure before opening.
+Copy the code and paste it into the terminal, then press enter.
+Make sure the power is completely off before replacing the fuse.
+Attach the bracket to the wall using the four screws provided.
+Double check the spelling before you hit send on that email.
+Drain the pasta and return it to the pot before adding the sauce.
+Slice the vegetables into even pieces so they cook at the same rate.
+Update the firmware by going to settings and selecting system update.
+Hold the phone flat and keep very still while the photo is being taken.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 7 — Conversational & emotional range
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Oh wow, that's actually really impressive.
+Hmm, I'm not entirely sure about that one.
+Yeah, that makes a lot of sense when you think about it.
+Honestly, I was pretty surprised by how it all turned out.
+No, no — that's not what I meant at all, sorry.
+That is genuinely one of the funniest things I've heard in ages.
+Well, to be fair, it's a bit more complicated than that.
+I think we'll figure it out — we always do in the end.
+That was a long day. I'm absolutely exhausted.
+Oh! I completely forgot about that — sorry, my fault.
+Right, let's get on with it then, shall we?
+I've been looking forward to this all week.
+It's hard to explain, but something just didn't feel right.
+Fair enough — I can totally see where you're coming from.
+I really appreciate you taking the time to help with that.
+Look, at the end of the day, what matters most is that we tried.
+Ha! I was not expecting that at all.
+Don't worry about it — it really is not a big deal.
+I have to say, I'm genuinely impressed with how that turned out.
+Alright, let's call it a night. I'll pick this up tomorrow.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 8 — Technical & informational
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The latest software update includes several important security patches.
+Restart the device to apply the changes you've just made.
+The API returned a four-oh-four error — the resource wasn't found.
+Your Wi-Fi signal strength is currently showing as excellent.
+Back up your data regularly — at least once a week is recommended.
+The CPU temperature is sitting at sixty-two degrees Celsius under load.
+This function takes a string and returns a boolean value.
+The database query completed in under fifty milliseconds.
+Enable two-factor authentication for an extra layer of account security.
+The model was trained on approximately ten thousand audio samples.
+Compression reduced the file size from forty megabytes down to six.
+The shell script will run automatically every morning at seven a.m.
+Check that port eight thousand and eighty is open in the firewall.
+The neural network has approximately three hundred million parameters.
+This repository was last updated three days ago by the main contributor.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 9 — Storytelling & longer sentences
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+It was one of those rare winter mornings where the sky was completely clear and the air had that sharp, clean bite to it.
+We'd been walking for about an hour before we spotted the track that led down through the bush to the beach.
+I remember thinking at the time that something about the whole situation felt slightly off, but I couldn't quite put my finger on what it was.
+The old man had lived in that house for fifty years and knew every creak and groan of the floorboards by heart.
+By the time we arrived, the sun had already dropped behind the mountain and the temperature was falling quickly.
+She opened the letter slowly, half dreading what she might find inside, and then burst out laughing at the unexpected contents.
+There's something about the smell of eucalyptus after rain that always takes me straight back to being a kid.
+The project had taken three years longer than anyone anticipated, but standing there looking at the finished result, it felt worth every minute.
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SESSION 10 — Cool-down: slow and clear
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Thank you.
+You're welcome.
+No worries at all.
+I'll look into that for you.
+Give me just a moment.
+That's a really good question.
+I hope that helps.
+Let me know if there's anything else.
+Have a great evening.
+Talk to you soon.

@@ -1,0 +1,12 @@
+data/raw/
+data/wavs/
+data/clips/
+output/
+*.onnx
+*.onnx.json
+*.zip
+*.wav
+*.m4a
+__pycache__/
+*.pyc
+~/.runpod_api_key

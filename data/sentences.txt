@@ -1,0 +1,135 @@
+# Sentences for TTS voice training
+# Phonetically diverse — covers broad range of English sounds and patterns
+# Aim to record 500–2000 for a good quality Piper model
+# Source: mix of Harvard Sentences, CMU ARCTIC, and custom phrases
+#
+# Recording tips:
+#   - Read naturally at a comfortable pace
+#   - Keep consistent mic distance (20–30cm)
+#   - Quiet room, no background noise
+#   - Aim for 2–8 seconds per sentence
+
+# ── Warm-up sentences ─────────────────────────────────────────────────────────
+The quick brown fox jumps over the lazy dog.
+She sells seashells by the seashore.
+How much wood would a woodchuck chuck if a woodchuck could chuck wood?
+Peter Piper picked a peck of pickled peppers.
+The rain in Spain falls mainly on the plain.
+
+# ── Everyday speech ───────────────────────────────────────────────────────────
+Good morning, how are you today?
+I'll be home by seven o'clock tonight.
+Can you please pass the salt?
+The weather looks great for a walk this afternoon.
+I need to pick up a few things from the shops.
+Let me know when you're ready to go.
+The coffee is ready on the kitchen bench.
+Did you remember to lock the front door?
+It's a beautiful day here in Hobart.
+I'm looking forward to the weekend.
+Turn left at the next set of traffic lights.
+The meeting starts at nine thirty in the morning.
+Could you send me that file when you get a chance?
+I think we should leave a little earlier to avoid traffic.
+The forecast says it might rain later this afternoon.
+
+# ── Numbers and times ─────────────────────────────────────────────────────────
+The temperature today is twenty-three degrees.
+Please call me back at four fifteen.
+The total comes to fifty-seven dollars and eighty cents.
+We leave on the fourteenth of April.
+There are three hundred and sixty-five days in a year.
+The flight departs at six forty-five in the evening.
+I'll meet you at half past two.
+It's approximately twelve kilometres from here.
+The speed limit on this road is one hundred kilometres per hour.
+Set a timer for twenty minutes.
+
+# ── Questions ─────────────────────────────────────────────────────────────────
+What time does the next bus arrive?
+Have you seen my keys anywhere?
+Would you like another cup of tea?
+What's the best way to get to the city from here?
+Do you know what the weather will be like tomorrow?
+Is there anything else you'd like me to do?
+Could you remind me about that tomorrow morning?
+What are you planning for dinner tonight?
+Have you finished reading that book yet?
+Where did you park the car?
+
+# ── Descriptions ──────────────────────────────────────────────────────────────
+The old sandstone building stood at the end of the street.
+A light breeze moved through the eucalyptus trees.
+The harbour was calm and the sky was a deep, clear blue.
+She wore a bright red jacket and carried a small leather bag.
+The market was busy with people browsing fresh fruit and vegetables.
+A large orange cat sat on the warm concrete step.
+The smell of bread drifted out from the bakery on the corner.
+Rolling green hills stretched out toward the distant mountains.
+He placed the brown paper parcel carefully on the table.
+The fire crackled softly in the stone fireplace.
+
+# ── Instructions and commands ─────────────────────────────────────────────────
+Please turn off the lights when you leave the room.
+Add one cup of flour and mix until smooth.
+Insert the key and turn it gently to the right.
+Open the app and navigate to the settings menu.
+Press and hold the button for three seconds to reset.
+Slice the onion thinly and set it aside.
+Click the blue button to confirm your selection.
+Fold the paper in half diagonally.
+Connect the cable to the port on the left side.
+Save the file before closing the program.
+
+# ── Phonetically rich sentences ───────────────────────────────────────────────
+The azure sky above the frozen fjord shimmered at dusk.
+She calmly juggled six vivid wax figurines.
+Five wolves quietly walked by the lake shore.
+A quizzical judge quickly seized the black ax from the jury.
+Bright vixens jump dozing fowl quack.
+The job requires extra pluck and zeal from every young wage earner.
+A wizard's job is to vex chumps quickly in fog.
+Pack my box with five dozen liquor jugs.
+The sphinx of black quartz judges my vow.
+Waltz, nymph, for quick jigs vex Bud.
+How vexingly quick daft zebras jump.
+Crazy Fredrick bought many very exquisite opal jewels.
+The five boxing wizards jump quickly.
+Sixty zippers were quickly picked from the woven jute bag.
+We promptly judged antique ivory buckles for the next prize.
+
+# ── Longer, more complex phrases ──────────────────────────────────────────────
+Despite the heavy rain, the outdoor market continued to operate normally.
+Scientists have recently discovered a new species of deep-sea fish near New Zealand.
+The committee voted unanimously to approve the proposed budget changes.
+After reviewing the evidence, the inspector concluded that the report was accurate.
+She carefully wrapped the fragile package before handing it to the courier.
+The conference will be held at the waterfront convention centre next Thursday.
+By the time we arrived, most of the food had already been taken.
+Thousands of spectators lined the streets to watch the annual parade.
+The renovation project is expected to take approximately six months to complete.
+He adjusted the microphone, cleared his throat, and began to speak.
+
+# ── Contractions and casual speech ───────────────────────────────────────────
+I've been meaning to call you back all week.
+We're going to need a bigger boat.
+She's not sure what she's going to do next.
+They don't have to come if they don't want to.
+It's been a while since we've caught up properly.
+I'm not going to pretend I know exactly what happened.
+You'd better bring a jacket — it's supposed to get cold tonight.
+We didn't expect the traffic to be that bad on a Sunday.
+He wasn't sure whether he'd locked the car or not.
+That's the best thing I've heard all day.
+
+# ── Technical and informational ───────────────────────────────────────────────
+The software update includes several important security fixes.
+To configure the device, connect it to your network and follow the on-screen prompts.
+The algorithm processes approximately one thousand records per second.
+Back up your data before proceeding with the installation.
+The battery should be fully charged before first use.
+Restart the system to apply the latest configuration changes.
+The file format must be either JPEG, PNG, or PDF.
+Enter your username and password to log in to your account.
+The API returns a JSON object containing the requested data.
+Use strong, unique passwords for each of your accounts.
