@@ -214,7 +214,45 @@ def ensure_ssh_key():
     return (SSH_KEY_PATH.parent / (SSH_KEY_PATH.name + ".pub")).read_text().strip()
 
 
+def ensure_network_volume():
+    """Create or reuse a persistent network volume for training data."""
+    OUTPUT_DIR.mkdir(exist_ok=True)
+    state_file = OUTPUT_DIR / "runpod_state.json"
+    state = json.loads(state_file.read_text()) if state_file.exists() else {}
+
+    if state.get("network_volume_id"):
+        print(f"  Using existing network volume: {state['network_volume_id']}")
+        return state["network_volume_id"]
+
+    # Find existing volume by name first
+    query = '{ myself { networkVolumes { id name size } } }'
+    vols = graphql(query)["myself"]["networkVolumes"]
+    for v in vols:
+        if v["name"] == "piper-training":
+            print(f"  Found existing network volume: {v['id']}")
+            state["network_volume_id"] = v["id"]
+            state_file.write_text(json.dumps(state, indent=2))
+            return v["id"]
+
+    # Create new 20GB network volume
+    create_query = """
+    mutation { createNetworkVolume(input: {
+        name: "piper-training"
+        size: 20
+        dataCenterId: "EU-RO-1"
+    }) { id name size } }
+    """
+    vol = graphql(create_query)["createNetworkVolume"]
+    print(f"  Created network volume: {vol['id']} ({vol['size']}GB)")
+    state["network_volume_id"] = vol["id"]
+    state_file.write_text(json.dumps(state, indent=2))
+    return vol["id"]
+
+
 def create_pod(pub_key):
+    print("[2a/4] Ensuring persistent network volume...")
+    network_volume_id = ensure_network_volume()
+
     query = """
     mutation CreatePod($input: PodFindAndDeployOnDemandInput!) {
       podFindAndDeployOnDemand(input: $input) { id }
@@ -223,7 +261,6 @@ def create_pod(pub_key):
     variables = {"input": {
         "cloudType": "SECURE",
         "gpuCount": 1,
-        "volumeInGb": 30,
         "containerDiskInGb": 40,
         "minVcpuCount": 4,
         "minMemoryInGb": 15,
@@ -231,10 +268,10 @@ def create_pod(pub_key):
         "name": "andrew-piper-training",
         "imageName": DOCKER_IMAGE,
         "ports": "22/tcp",
-        "volumeMountPath": "/workspace",
+        "networkVolumeId": network_volume_id,
         "startJupyter": False,
         "startSsh": True,
-        "env": [{"key": "PUBLIC_KEY", "value": pub_key}, {"key": "RUNPOD_API_KEY", "value": RUNPOD_API_KEY}],
+        "env": [{"key": "PUBLIC_KEY", "value": pub_key}],
     }}
     return graphql(query, variables)["podFindAndDeployOnDemand"]["id"]
 
