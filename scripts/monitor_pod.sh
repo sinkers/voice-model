@@ -13,9 +13,18 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 STATE_FILE="$PROJECT_DIR/output/runpod_state.json"
 
 if [ -f "$STATE_FILE" ]; then
-  POD_ID=$(python3 -c "import json; d=json.load(open('$STATE_FILE')); print(d['pod_id'])")
-  SSH_HOST=$(python3 -c "import json; d=json.load(open('$STATE_FILE')); print(d['ip'])")
-  SSH_PORT=$(python3 -c "import json; d=json.load(open('$STATE_FILE')); print(d['port'])")
+  # Parse all three fields in a single python3 call; fail loudly if any are missing.
+  _config=$(python3 - "$STATE_FILE" <<'PYEOF'
+import json, sys
+try:
+    d = json.load(open(sys.argv[1]))
+    print(d["pod_id"], d["ip"], d["port"])
+except (KeyError, json.JSONDecodeError) as e:
+    print(f"ERROR: State file invalid or incomplete: {e}", file=sys.stderr)
+    sys.exit(2)
+PYEOF
+  ) || exit 2
+  read -r POD_ID SSH_HOST SSH_PORT <<< "$_config"
 elif [ $# -ge 2 ]; then
   POD_ID="$1"
   SSH_HOST="$2"
@@ -31,13 +40,18 @@ else
   echo "   or: ensure output/runpod_state.json exists with pod_id, ip, port fields"
   exit 2
 fi
-SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=10 -i $SSH_KEY"
+SSH_OPTS=(-o StrictHostKeyChecking=no -o ConnectTimeout=10 -i "$SSH_KEY")
 RUNPOD_API_KEY="${RUNPOD_API_KEY:-$(cat ~/.runpod_api_key 2>/dev/null)}"
+if [ -z "$RUNPOD_API_KEY" ]; then
+  echo "ERROR: RUNPOD_API_KEY is not set and ~/.runpod_api_key not found."
+  echo "Set the env var or create the key file before running this script."
+  exit 2
+fi
 OUTPUT_DIR="/home/pi/Documents/voice-model/output"
 VOICES_DIR="/opt/voice-assistant/voices"
 
 ssh_cmd() {
-  ssh $SSH_OPTS -p "$SSH_PORT" "root@$SSH_HOST" "$@"
+  ssh "${SSH_OPTS[@]}" -p "$SSH_PORT" "root@$SSH_HOST" "$@"
 }
 
 echo "=== Piper Training Monitor ==="
@@ -66,8 +80,8 @@ echo "=== TRAINING COMPLETE — Downloading model ==="
 ssh_cmd "ls -lh /workspace/output/"
 
 mkdir -p "$OUTPUT_DIR"
-scp $SSH_OPTS -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx" "$OUTPUT_DIR/"
-scp $SSH_OPTS -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx.json" "$OUTPUT_DIR/"
+scp "${SSH_OPTS[@]}" -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx" "$OUTPUT_DIR/"
+scp "${SSH_OPTS[@]}" -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx.json" "$OUTPUT_DIR/"
 
 echo "Downloaded:"
 ls -lh "$OUTPUT_DIR/andrew-medium.onnx" "$OUTPUT_DIR/andrew-medium.onnx.json"

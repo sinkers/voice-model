@@ -354,6 +354,7 @@ def main():
 
     # ── Full run ──────────────────────────────────────────────────────────────
     pod_id = None
+    _cleanup_on_exit = True  # set to False on intentional detach or clean completion
     try:
         # Resume existing pod if state file exists
         if state_file.exists():
@@ -391,23 +392,26 @@ def main():
         if status == "DONE":
             print("  Already complete — downloading...")
         else:
-            # Write script to pod
-            escaped = TRAIN_SCRIPT.replace("'", "'\\''")
             ssh(ssh_info, f"cat > /workspace/train.sh << 'EOF'\n{TRAIN_SCRIPT}\nEOF\nchmod +x /workspace/train.sh")
             ssh(ssh_info, "nohup bash /workspace/train.sh > /workspace/train.log 2>&1 &", check=False)
             print("  Script launched. Monitoring...")
             print()
             done = monitor(pod_id, ssh_info)
             if not done:
+                # User intentionally detached with Ctrl+C — pod is still running.
+                # Do NOT terminate it; leave state file in place for resumption.
+                _cleanup_on_exit = False
                 return
 
         _download_and_deploy(ssh_info, pod_id, state_file)
+        _cleanup_on_exit = False  # _download_and_deploy already terminated the pod
     except Exception as e:
         print(f"\nERROR: {e}", file=sys.stderr)
         raise
     finally:
-        # If state_file still exists the pod was not cleanly terminated — stop billing.
-        if pod_id and state_file.exists():
+        # Only terminate the pod here if we exited unexpectedly (not on detach or
+        # clean completion), to avoid billing for an abandoned pod.
+        if _cleanup_on_exit and pod_id and state_file.exists():
             print("Terminating pod to stop billing...")
             try:
                 terminate_pod(pod_id)
