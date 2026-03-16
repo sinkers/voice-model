@@ -1,21 +1,57 @@
 #!/usr/bin/env bash
 # monitor_pod.sh — check training, download if done, terminate pod
 # Usage: ./monitor_pod.sh
+#        ./monitor_pod.sh <pod_id> <ssh_host> [ssh_port]
 # Exit 0 = done+downloaded, Exit 1 = still training, Exit 2 = error
 
 set -euo pipefail
 
-POD_ID="p35ewnlss6gt80"
 SSH_KEY="/home/pi/.ssh/runpod_piper"
-SSH_HOST="69.30.85.192"
-SSH_PORT="22022"
-SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=10 -i $SSH_KEY"
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+STATE_FILE="$PROJECT_DIR/output/runpod_state.json"
+
+if [ -f "$STATE_FILE" ]; then
+  # Parse all three fields in a single python3 call; fail loudly if any are missing.
+  _config=$(python3 - "$STATE_FILE" <<'PYEOF'
+import json, sys
+try:
+    d = json.load(open(sys.argv[1]))
+    print(d["pod_id"], d["ip"], d["port"])
+except (KeyError, json.JSONDecodeError) as e:
+    print(f"ERROR: State file invalid or incomplete: {e}", file=sys.stderr)
+    sys.exit(2)
+PYEOF
+  ) || exit 2
+  read -r POD_ID SSH_HOST SSH_PORT <<< "$_config"
+elif [ $# -ge 2 ]; then
+  POD_ID="$1"
+  SSH_HOST="$2"
+  SSH_PORT="${3:-22022}"
+elif [ $# -eq 1 ]; then
+  echo "ERROR: pod_id provided but ssh_host is required without a state file."
+  echo "Usage: $0 <pod_id> <ssh_host> [ssh_port]"
+  echo "   or: ensure output/runpod_state.json exists with pod_id, ip, port fields"
+  exit 2
+else
+  echo "ERROR: No pod config found."
+  echo "Usage: $0 <pod_id> <ssh_host> [ssh_port]"
+  echo "   or: ensure output/runpod_state.json exists with pod_id, ip, port fields"
+  exit 2
+fi
+SSH_OPTS=(-o StrictHostKeyChecking=no -o ConnectTimeout=10 -i "$SSH_KEY")
 RUNPOD_API_KEY="${RUNPOD_API_KEY:-$(cat ~/.runpod_api_key 2>/dev/null)}"
+if [ -z "$RUNPOD_API_KEY" ]; then
+  echo "ERROR: RUNPOD_API_KEY is not set and ~/.runpod_api_key not found."
+  echo "Set the env var or create the key file before running this script."
+  exit 2
+fi
 OUTPUT_DIR="/home/pi/Documents/voice-model/output"
 VOICES_DIR="/opt/voice-assistant/voices"
 
 ssh_cmd() {
-  ssh $SSH_OPTS -p "$SSH_PORT" "root@$SSH_HOST" "$@"
+  ssh "${SSH_OPTS[@]}" -p "$SSH_PORT" "root@$SSH_HOST" "$@"
 }
 
 echo "=== Piper Training Monitor ==="
@@ -44,8 +80,8 @@ echo "=== TRAINING COMPLETE — Downloading model ==="
 ssh_cmd "ls -lh /workspace/output/"
 
 mkdir -p "$OUTPUT_DIR"
-scp $SSH_OPTS -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx" "$OUTPUT_DIR/"
-scp $SSH_OPTS -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx.json" "$OUTPUT_DIR/"
+scp "${SSH_OPTS[@]}" -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx" "$OUTPUT_DIR/"
+scp "${SSH_OPTS[@]}" -P "$SSH_PORT" "root@$SSH_HOST:/workspace/output/andrew-medium.onnx.json" "$OUTPUT_DIR/"
 
 echo "Downloaded:"
 ls -lh "$OUTPUT_DIR/andrew-medium.onnx" "$OUTPUT_DIR/andrew-medium.onnx.json"
