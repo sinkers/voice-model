@@ -387,9 +387,9 @@ def main():
         return
 
     # ── Full run ──────────────────────────────────────────────────────────────
-    # Resume existing pod if state file exists
-    if state_file.exists():
-        state = json.loads(state_file.read_text())
+    # Resume existing pod if state file has a pod_id
+    state = json.loads(state_file.read_text()) if state_file.exists() else {}
+    if state.get("pod_id"):
         pod_id = state["pod_id"]
         print(f"Resuming pod {pod_id} from state file...")
     else:
@@ -404,7 +404,9 @@ def main():
 
         print("[2/4] Creating pod...")
         pod_id = create_pod(pub_key)
-        state_file.write_text(json.dumps({"pod_id": pod_id, "created": time.time()}))
+        state["pod_id"] = pod_id
+        state["created"] = time.time()
+        state_file.write_text(json.dumps(state, indent=2))
         print(f"  Pod ID: {pod_id}")
 
     print("[3/4] Waiting for SSH...")
