@@ -22,7 +22,7 @@ from pathlib import Path
 # ── Config ────────────────────────────────────────────────────────────────────
 RUNPOD_API_KEY  = os.environ.get("RUNPOD_API_KEY", "") or open(os.path.expanduser("~/.runpod_api_key")).read().strip()
 DATASET_URL  = "https://litter.catbox.moe/t7ix4t.zip"
-GPU_TYPE        = "NVIDIA RTX A5000"
+GPU_TYPE        = "NVIDIA RTX A4000"  # fallback if A5000 unavailable; 16GB is plenty for VITS
 # PyTorch 2.1 + Python 3.10: PL 1.7.7 has wheels for py3.10 and works with torch 2.x
 DOCKER_IMAGE    = "runpod/pytorch:2.1.0-py3.10-cuda11.8.0-devel-ubuntu22.04"
 EPOCHS          = 6000
